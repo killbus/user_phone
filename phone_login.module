@@ -1,0 +1,71 @@
+<?php
+
+/**
+ * @file
+ * Contains phone_login.module.
+ */
+
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\user\RoleInterface;
+
+/**
+ * Implements hook_help().
+ */
+function phone_login_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the phone_login module.
+    case 'help.page.phone_login':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('My Awesome Module') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function phone_login_theme() {
+  return [
+    'phone_login' => [
+      'render element' => 'children',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_install().
+ */
+function phone_login_install()
+{
+    $permissions = [
+        'restful post phone_login_bind_phone'
+    ];
+    user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, $permissions);
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function phone_login_entity_base_field_info(EntityTypeInterface $entity_type) {
+    $fields = [];
+    if ($entity_type->id() == 'user') {
+
+        $fields['phone'] = BaseFieldDefinition::create('string')
+            ->setLabel(t('手机号'))
+            ->setDisplayOptions('view', [
+                'label' => 'inline',
+                'type' => 'string'
+            ])
+            ->setDisplayOptions('form', [
+                'type' => 'string_textfield'
+            ])
+            ->setDisplayConfigurable('view', true)
+            ->setDisplayConfigurable('form', true);
+    }
+    return $fields;
+}

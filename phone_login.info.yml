@@ -1,0 +1,15 @@
+name: 'Phone Login'
+type: module
+description: 'My Awesome Module'
+core: 8.x
+package: Custom
+dependencies:
+  - basic_auth
+  - phone_login
+  - phone_verify
+  - rest
+  - serialization
+  - simple_oauth
+  - simple_oauth_code
+  - user
+  - user_api

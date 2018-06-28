@@ -1,0 +1,21 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - phone_login
+    - serialization
+    - simple_oauth
+    - user
+id: phone_login_phone_sms_login
+plugin_id: phone_login_phone_sms_login
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth
+    - oauth2
+    - cookie
