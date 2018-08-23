@@ -12,6 +12,7 @@ use Drupal\user\Entity\User;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * Provides a resource to get view modes by entity and bundle.
@@ -115,12 +116,15 @@ class PhoneSmsLogin extends ResourceBase {
         $user = array_pop($users);
         // 已经注册，生成 simple_oauth code
         $authorization = $generator->generate($data['client_id'], $user);
-      } else {
-        // 还没注册，创建新用户
+      } elseif (isset($data['auto_register']) && (bool)$data['auto_register']) {
+        // 还没注册，自动注册创建新用户
         $user = $this->createUser($data['phone'], $data['phone']. '@' .$data['phone']);
         $user->set('phone', $data['phone']);
         $user->save();
         $authorization = $generator->generate($data['client_id'], $user);
+      } else {
+        // 提示手机号没有注册
+        throw new BadRequestHttpException('该手机号还没有注册');
       }
     }
 
