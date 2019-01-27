@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains phone_login.module.
+ * Contains user_phone.module.
  */
 
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -13,10 +13,10 @@ use Drupal\user\RoleInterface;
 /**
  * Implements hook_help().
  */
-function phone_login_help($route_name, RouteMatchInterface $route_match) {
+function user_phone_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
-    // Main module help for the phone_login module.
-    case 'help.page.phone_login':
+    // Main module help for the user_phone module.
+    case 'help.page.user_phone':
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('My Awesome Module') . '</p>';
@@ -29,9 +29,9 @@ function phone_login_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_theme().
  */
-function phone_login_theme() {
+function user_phone_theme() {
   return [
-    'phone_login' => [
+    'user_phone' => [
       'render element' => 'children',
     ],
   ];
@@ -40,10 +40,10 @@ function phone_login_theme() {
 /**
  * Implements hook_install().
  */
-function phone_login_install()
+function user_phone_install()
 {
     $permissions = [
-        'restful post phone_login_bind_phone'
+        'restful post user_phone_bind_phone'
     ];
     user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, $permissions);
 }
@@ -51,7 +51,7 @@ function phone_login_install()
 /**
  * Implements hook_entity_base_field_info().
  */
-function phone_login_entity_base_field_info(EntityTypeInterface $entity_type) {
+function user_phone_entity_base_field_info(EntityTypeInterface $entity_type) {
     $fields = [];
     if ($entity_type->id() == 'user') {
 

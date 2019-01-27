@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\phone_login\Functional;
+namespace Drupal\Tests\user_phone\Functional;
 
 use Drupal\Core\Url;
 use Drupal\Tests\BrowserTestBase;
@@ -8,7 +8,7 @@ use Drupal\Tests\BrowserTestBase;
 /**
  * Simple test to ensure that main page loads with module enabled.
  *
- * @group phone_login
+ * @group user_phone
  */
 class LoadTest extends BrowserTestBase {
 
@@ -17,7 +17,7 @@ class LoadTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['phone_login'];
+  public static $modules = ['user_phone'];
 
   /**
    * A user with permission to administer site configuration.

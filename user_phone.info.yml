@@ -1,11 +1,11 @@
-name: 'Phone Login'
+name: 'User Phone'
 type: module
-description: 'My Awesome Module'
+description: 'Provides a phone field to the core user entity.'
 core: 8.x
 package: Custom
 dependencies:
   - basic_auth
-  - phone_login
+  - user_phone
   - phone_verify
   - rest
   - serialization

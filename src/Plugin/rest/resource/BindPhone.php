@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\phone_login\Plugin\rest\resource;
+namespace Drupal\user_phone\Plugin\rest\resource;
 
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\rest\ModifiedResourceResponse;
@@ -18,10 +18,10 @@ use Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException;
  * Provides a resource to get view modes by entity and bundle.
  *
  * @RestResource(
- *   id = "phone_login_bind_phone",
+ *   id = "user_phone_bind_phone",
  *   label = @Translation("Bind phone"),
  *   uri_paths = {
- *     "create" = "/api/rest/phone-login/bind-phone"
+ *     "create" = "/api/rest/user-phone/bind-phone"
  *   }
  * )
  */
@@ -71,7 +71,7 @@ class BindPhone extends ResourceBase {
       $plugin_id,
       $plugin_definition,
       $container->getParameter('serializer.formats'),
-      $container->get('logger.factory')->get('phone_login'),
+      $container->get('logger.factory')->get('user_phone'),
       $container->get('current_user')
     );
   }

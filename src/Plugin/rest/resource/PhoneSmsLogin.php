@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\phone_login\Plugin\rest\resource;
+namespace Drupal\user_phone\Plugin\rest\resource;
 
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -18,10 +18,10 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  * Provides a resource to get view modes by entity and bundle.
  *
  * @RestResource(
- *   id = "phone_login_phone_sms_login",
+ *   id = "user_phone_phone_sms_login",
  *   label = @Translation("Phone sms login"),
  *   uri_paths = {
- *     "create" = "/api/rest/phone-login/phone-sms-login"
+ *     "create" = "/api/rest/user-phone/phone-sms-login"
  *   }
  * )
  */
@@ -78,7 +78,7 @@ class PhoneSmsLogin extends ResourceBase {
       $plugin_id,
       $plugin_definition,
       $container->getParameter('serializer.formats'),
-      $container->get('logger.factory')->get('phone_login'),
+      $container->get('logger.factory')->get('user_phone'),
       $container->get('current_user'),
       $container->get('phone_verify.sms_code_verifier')
     );

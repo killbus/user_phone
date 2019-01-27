@@ -1,14 +1,14 @@
 {
-  "name": "drupal/phone_login",
+  "name": "drupal/user_phone",
   "type": "drupal-module",
-  "description": "My Awesome Module",
+  "description": "Provides a phone field to the core user entity.",
   "keywords": ["Drupal"],
   "license": "GPL-2.0+",
-  "homepage": "https://www.drupal.org/project/phone_login",
+  "homepage": "https://www.drupal.org/project/user_phone",
   "minimum-stability": "dev",
   "support": {
-    "issues": "https://www.drupal.org/project/issues/phone_login",
-    "source": "http://cgit.drupalcode.org/phone_login"
+    "issues": "https://www.drupal.org/project/issues/user_phone",
+    "source": "http://cgit.drupalcode.org/user_phone"
   },
   "require": { }
 }
