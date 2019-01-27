@@ -139,6 +139,6 @@ class PhoneSmsLogin extends ResourceBase {
    * @return User
    */
   protected function createUser($username, $email) {
-    return \Drupal::getContainer()->get('user_api.user_creator')->createUser($username, $email);
+    return \Drupal::getContainer()->get('enhanced_user.user_creator')->createUser($username, $email);
   }
 }
