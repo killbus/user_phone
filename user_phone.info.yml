@@ -2,7 +2,7 @@ name: 'User Phone'
 type: module
 description: 'Provides a phone field to the core user entity.'
 core: 8.x
-package: Custom
+package: User
 dependencies:
   - drupal:basic_auth
   - user_phone:user_phone

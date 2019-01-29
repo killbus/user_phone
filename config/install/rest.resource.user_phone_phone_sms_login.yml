@@ -2,11 +2,11 @@ langcode: en
 status: true
 dependencies:
   module:
-    - drupal:basic_auth
-    - user_phone:user_phone
-    - drupal:serialization
-    - simple_oauth:simple_oauth
-    - drupal:user
+    - basic_auth
+    - user_phone
+    - serialization
+    - simple_oauth
+    - user
 id: user_phone_phone_sms_login
 plugin_id: user_phone_phone_sms_login
 granularity: resource
