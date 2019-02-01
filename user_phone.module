@@ -56,7 +56,7 @@ function user_phone_entity_base_field_info(EntityTypeInterface $entity_type) {
     if ($entity_type->id() == 'user') {
 
         $fields['phone'] = BaseFieldDefinition::create('string')
-            ->setLabel(t('手机号'))
+            ->setLabel(t('Phone number'))
             ->setDisplayOptions('view', [
                 'label' => 'inline',
                 'type' => 'string'
