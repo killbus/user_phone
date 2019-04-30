@@ -4,12 +4,5 @@ description: 'Provides a phone field to the core user entity.'
 core: 8.x
 package: User
 dependencies:
-  - drupal:basic_auth
-  - user_phone:user_phone
   - phone_verify:phone_verify
-  - drupal:rest
-  - drupal:serialization
-  - simple_oauth:simple_oauth
   - simple_oauth_code:simple_oauth_code
-  - drupal:user
-  - enhanced_user:enhanced_user
