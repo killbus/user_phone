@@ -101,11 +101,6 @@ class PhoneSmsLogin extends ResourceBase {
    *   Throws exception expected.
    */
   public function post($data) {
-    // You must to implement the logic of your REST Resource here.
-    // Use current user after pass authentication to validate access.
-    if (!$this->currentUser->hasPermission('access content')) {
-      throw new AccessDeniedHttpException();
-    }
 
     if ($this->smsCodeVerifier->verify($data['phone'], $data['code'])) {
       $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['phone' => $data['phone']]);

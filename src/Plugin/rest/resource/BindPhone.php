@@ -85,11 +85,6 @@ class BindPhone extends ResourceBase {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function post($data) {
-    // You must to implement the logic of your REST Resource here.
-    // Use current user after pass authentication to validate access.
-    if (!$this->currentUser->hasPermission('access content')) {
-      throw new AccessDeniedHttpException();
-    }
 
     if (!isset($data['user_id']) || !isset($data['phone']))
       throw new ParameterNotFoundException('user_id and phone are required.');
