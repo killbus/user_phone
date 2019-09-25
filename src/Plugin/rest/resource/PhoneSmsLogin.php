@@ -126,6 +126,8 @@ class PhoneSmsLogin extends ResourceBase {
         // 提示手机号没有注册
         throw new BadRequestHttpException('该手机号还没有注册');
       }
+    } else {
+      throw new BadRequestHttpException('验证码无效！');
     }
 
     return new ModifiedResourceResponse([
