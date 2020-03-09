@@ -10,5 +10,9 @@
     "issues": "https://www.drupal.org/project/issues/user_phone",
     "source": "http://cgit.drupalcode.org/user_phone"
   },
-  "require": { }
+  "require": {
+    "drupal/mobile_number": "1.x-dev",
+    "drupal/mail_login": "^1.0",
+    "drupal/smsframework": "^1.2"
+  }
 }
