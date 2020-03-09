@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.phone
+  module:
+    - mobile_number
+    - user
+id: user.user.phone
+field_name: phone
+entity_type: user
+bundle: user
+label: 'Phone number'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  countries: {  }
+  verify: optional
+  message: "Your verification code from !site_name:\r\n!code"
+field_type: mobile_number

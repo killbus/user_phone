@@ -1,0 +1,7 @@
+user_phone.phone_login:
+  path: '/user/login/phone'
+  defaults:
+    _form: '\Drupal\user_phone\Form\LoginForm'
+    _title: 'Phone login'
+  requirements:
+    _access: 'TRUE'

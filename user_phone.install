@@ -1,0 +1,25 @@
+<?php
+
+use Drupal\user\RoleInterface;
+
+/**
+ * Implements hook_install().
+ */
+function user_phone_install()
+{
+  $permissions = [
+    'restful post user_phone_bind_phone'
+  ];
+  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, $permissions);
+
+  // overide mail_login setting
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('mail_login.settings');
+  if ($config->get('mail_login_username_title') === 'Login by username/email address') {
+    $config->set('mail_login_username_title', 'Login by username/email address/phone number');
+  }
+  if ($config->get('mail_login_username_description') === 'You can use your username or email address to login.') {
+    $config->set('mail_login_username_description', 'You can use your username or email address to login.');
+  }
+  $config->save();
+}

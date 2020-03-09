@@ -4,16 +4,16 @@
  * @file
  * Contains user_phone.module.
  */
-
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\user\RoleInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_help().
  */
-function user_phone_help($route_name, RouteMatchInterface $route_match) {
+function user_phone_help($route_name, RouteMatchInterface $route_match)
+{
   switch ($route_name) {
     // Main module help for the user_phone module.
     case 'help.page.user_phone':
@@ -29,7 +29,8 @@ function user_phone_help($route_name, RouteMatchInterface $route_match) {
 /**
  * Implements hook_theme().
  */
-function user_phone_theme() {
+function user_phone_theme()
+{
   return [
     'user_phone' => [
       'render element' => 'children',
@@ -37,35 +38,79 @@ function user_phone_theme() {
   ];
 }
 
+
 /**
- * Implements hook_install().
+ * Implements hook_form_alter().
  */
-function user_phone_install()
-{
-    $permissions = [
-        'restful post user_phone_bind_phone'
-    ];
-    user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, $permissions);
+function user_phone_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  switch ($form_id) {
+    case 'mail_login_form_admin_settings':
+      // Load module configurations.
+      $config_factory = \Drupal::configFactory();
+      $config = $config_factory->get('user_phone.settings');
+      $form['general']['phone_instead_of_name_login_enabled'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Enable login by user phone'),
+        '#default_value' => $config->get('phone_instead_of_name_login_enabled'),
+        '#description' => t('This option enables login by user phone in user name login form.'),
+        '#weight' => -100
+      );
+      array_unshift($form['#submit'], '_user_phone_setting_submit');
+      break;
+    case 'user_login_form':
+      // Load module configurations.
+      $config_factory = \Drupal::configFactory();
+      $config = $config_factory->get('user_phone.settings');
+      // Check for settings to enable login by email address.
+      if ($config->get('phone_instead_of_name_login_enabled')) {
+        // Add our custom validation for login form.
+        array_unshift($form['#validate'], '_user_phone_login_extra_validate');
+      }
+      break;
+  }
 }
 
-/**
- * Implements hook_entity_base_field_info().
- */
-function user_phone_entity_base_field_info(EntityTypeInterface $entity_type) {
-    $fields = [];
-    if ($entity_type->id() == 'user') {
 
-        $fields['phone'] = BaseFieldDefinition::create('string')
-            ->setLabel(t('Phone number'))
-            ->setDisplayOptions('view', [
-                'label' => 'inline',
-                'type' => 'string'
-            ])
-            ->setDisplayOptions('form', [
-                'type' => 'string_textfield'
-            ])
-            ->setDisplayConfigurable('view', true)
-            ->setDisplayConfigurable('form', true);
+function _user_phone_setting_submit(array &$form, FormStateInterface $form_state) {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('user_phone.settings');
+  $config
+    ->set('phone_instead_of_name_login_enabled', $form_state->getValue('phone_instead_of_name_login_enabled'))
+    ->save();
+}
+
+
+/**
+ * Custom validate function to enable user phone login.
+ */
+function _user_phone_login_extra_validate($form, FormStateInterface &$form_state) {
+  $login_input = $form_state->getValue('name');
+
+  /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $form_display */
+  $form_display =\Drupal::service('entity_display.repository')->getFormDisplay('user', 'user', 'default');
+  $phone = $form_display->getComponent('phone');
+
+  if (isset($phone['settings']['default_country'])) {
+
+    /** @var \Drupal\mobile_number\MobileNumberUtilInterface $util */
+    $util = \Drupal::service('mobile_number.util');
+    $mobileNumber = $util->getMobileNumber($login_input, $phone['settings']['default_country']);
+
+    if ($mobileNumber) {
+
+      // 查找手机号是否已经注册
+      $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['phone' => $util->getCallableNumber($mobileNumber)]);
+      if (count($users) > 1) {
+        // 多个用户，提示找管理员
+        $form_state->setError($form['name'], 'Multi accounts found for the mobile number, please contact administrator.');
+      } elseif (count($users) === 1) {
+        // 找到一个用户
+        $form_state->setValue('name', reset($users)->getAccountName());
+      }
     }
-    return $fields;
+
+  } else {
+    \Drupal::messenger()->addError('Please set default country for user entity default form display in field widget settings.');
+  }
+
 }

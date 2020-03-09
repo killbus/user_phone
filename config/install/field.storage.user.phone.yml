@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - mobile_number
+    - user
+id: user.phone
+field_name: phone
+entity_type: user
+type: mobile_number
+settings:
+  unique: 1
+module: mobile_number
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

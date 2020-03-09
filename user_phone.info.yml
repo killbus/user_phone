@@ -4,5 +4,9 @@ description: 'Provides a phone field to the core user entity.'
 core: 8.x
 package: User
 dependencies:
-  - phone_verify:phone_verify
-  - simple_oauth_code:simple_oauth_code
+  - drupal:field
+  - mobile_number:mobile_number
+  - smsmframework:sms
+  - drupal:user
+  - mail_login:mail_login
+core_incompatible: false

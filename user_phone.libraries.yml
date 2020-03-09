@@ -1,0 +1,10 @@
+sms-login:
+  version: 1.0
+  js:
+    'assets/sms-login.js': {}
+  css:
+    component:
+      'assets/sms-login.css': {}
+  dependencies:
+    - core/jquery.once
+

@@ -1,0 +1,6 @@
+# Other authentication methods may add pages below user/login/.
+user_phone.phone_login:
+  route_name: user_phone.phone_login
+  base_route: user.page
+  title: 'Phone login'
+  weight: -9
