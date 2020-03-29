@@ -7,6 +7,7 @@ dependencies:
   - drupal:field
   - mobile_number:mobile_number
   - smsmframework:sms
+  - phone_verify:phone_verify
   - drupal:user
   - mail_login:mail_login
 core_incompatible: false

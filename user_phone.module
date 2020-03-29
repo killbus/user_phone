@@ -8,6 +8,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\user\RoleInterface;
 use Drupal\Core\Form\FormStateInterface;
+use League\OAuth2\Server\Exception\OAuthServerException;
 
 /**
  * Implements hook_help().
@@ -84,7 +85,20 @@ function _user_phone_setting_submit(array &$form, FormStateInterface $form_state
  * Custom validate function to enable user phone login.
  */
 function _user_phone_login_extra_validate($form, FormStateInterface &$form_state) {
-  $login_input = $form_state->getValue('name');
+
+  try {
+    $user_name = user_phone_transfer_phone_to_username($form_state->getValue('name'));
+    if ($user_name) {
+      $form_state->setValue('name', reset($users)->getAccountName());
+    }
+  } catch (\Exception $e) {
+    $form_state->setError($form['name'], $e->getMessage());
+  }
+
+}
+
+function user_phone_transfer_phone_to_username($input) {
+  $login_input = $input;
 
   /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $form_display */
   $form_display =\Drupal::service('entity_display.repository')->getFormDisplay('user', 'user', 'default');
@@ -102,10 +116,10 @@ function _user_phone_login_extra_validate($form, FormStateInterface &$form_state
       $users = \Drupal::entityTypeManager()->getStorage('user')->loadByProperties(['phone' => $util->getCallableNumber($mobileNumber)]);
       if (count($users) > 1) {
         // 多个用户，提示找管理员
-        $form_state->setError($form['name'], 'Multi accounts found for the mobile number, please contact administrator.');
+        throw \Exception(t('Multi accounts found for the mobile number, please contact administrator.'));
       } elseif (count($users) === 1) {
         // 找到一个用户
-        $form_state->setValue('name', reset($users)->getAccountName());
+        return reset($users)->getAccountName();
       }
     }
 
@@ -113,4 +127,5 @@ function _user_phone_login_extra_validate($form, FormStateInterface &$form_state
     \Drupal::messenger()->addError('Please set default country for user entity default form display in field widget settings.');
   }
 
+  return false;
 }
